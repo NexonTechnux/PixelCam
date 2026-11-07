@@ -40,3 +40,12 @@ jobs:
             app/build/outputs/apk/debug/app-debug.apk
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Generate debug keystore
+        run: |
+        keytool -genkeypair -v \
+          -keystore debug.keystore \
+          -storepass android -keypass android \
+          -alias androiddebugkey \
+          -keyalg RSA -keysize 2048 -validity 10000 \
+          -dname "CN=Android Debug,O=Android,C=US"
