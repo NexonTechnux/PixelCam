@@ -27,6 +27,15 @@ jobs:
           echo "84831b9409646a918e30573bab4c9c91346d8abd" >> $ANDROID_SDK_ROOT/licenses/android-sdk-license
           echo "d975f751698a77b660f125f16ef8099640498eff" >> $ANDROID_SDK_ROOT/licenses/android-sdk-license
 
+      - name: Generate debug keystore
+        run: |
+          keytool -genkeypair -v \
+            -keystore debug.keystore \
+            -storepass android -keypass android \
+            -alias androiddebugkey \
+            -keyalg RSA -keysize 2048 -validity 10000 \
+            -dname "CN=Android Debug,O=Android,C=US"
+
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
@@ -40,12 +49,3 @@ jobs:
             app/build/outputs/apk/debug/app-debug.apk
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Generate debug keystore
-        run: |
-        keytool -genkeypair -v \
-          -keystore debug.keystore \
-          -storepass android -keypass android \
-          -alias androiddebugkey \
-          -keyalg RSA -keysize 2048 -validity 10000 \
-          -dname "CN=Android Debug,O=Android,C=US"
